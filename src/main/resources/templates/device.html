@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title>New Connected Device</title>
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    </head>
+    <body>
+        <h1>New Connected Device</h1>
+        <a th:href="@{/index}">Back to Device List</a>
+        <br/><br/>
+        <div th:if="${device}">
+            <table border="0">
+                <tr>
+                    <td>ID</td>
+                    <td>:</td>
+                    <td th:utext="${device.id}">...</td>          
+                </tr>
+                <tr>
+                    <td>Typ</td>
+                    <td>:</td>
+                    <td th:utext="${device.typ}">...</td>             
+                </tr>
+                <tr>
+                    <td>Location</td>
+                    <td>:</td>
+                    <td th:utext="${device.location}">...</td>              
+                </tr>
+            </table>
+            <br/><br/>
+            <div th:if="not ${allowDelete}">
+                <a th:href="@{/index/{deviceId}/delete(deviceId=${device.id})}">Detach</a>
+            </div>
+            <form th:if="${allowDelete}" th:action="@{/index/{deviceId}/delete(deviceId=${device.id})}" method="POST">                 
+                Detach this device? <input type="submit" th:value="Yes" />
+            </form>
+        </div>
+        <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />        
+    </body>
+</html>

@@ -1,0 +1,11 @@
+version: '3.7'
+services:
+  # backend-service
+  app:
+    container_name: backend-server-service
+    restart: always
+    ports:
+      - '8080:8080'
+    build: 
+      dockerfile: "Dockerfile.txt"
+      context: . 

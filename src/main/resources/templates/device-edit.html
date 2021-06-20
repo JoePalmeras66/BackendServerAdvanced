@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head>
+        <meta charset="UTF-8" />
+        <title th:text="${add} ? 'Connect to Device' : 'Edit a Device'" />
+        <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    </head>
+    <body>
+        <h1 th:text="${add} ? 'Connect to Device:' : 'Edit a Device:'" />
+        <a th:href="@{/index}">Back to Device List</a>
+        <br/><br/>
+        <form th:action="${add} ? @{/index/add} : @{/index/{deviceId}/edit(deviceId=${device.id})}"
+              th:object="${device}" method="POST">
+            <table border="0">
+                <tr th:if="${device.id}">
+                    <td>ID</td>
+                    <td>:</td>
+                    <td th:utext="${device.id}">...</td>             
+                </tr>
+                <tr>
+                    <td>Typ</td>
+                    <td>:</td>
+                    <td><input type="text" th:field="*{typ}" /></td>              
+                </tr>
+                <tr>
+                    <td>Location</td>
+                    <td>:</td>
+                    <td><input type="text" th:field="*{location}" /></td>              
+                </tr>
+                <tr>
+                    <td>Equipment</td>
+                    <td>:</td>
+                    <td><input type="text" th:field="*{equipment}" /></td>              
+                </tr>
+                <tr>
+                    <td>Energy</td>
+                    <td>:</td>
+                    <td><input type="text" th:field="*{energy}" /></td>              
+                </tr>
+            </table>
+            <input type="submit" th:value="${add} ? 'Connect' : 'Update'" />
+        </form>
+
+        <br/>
+        <!-- Check if errorMessage is not null and not empty -->       
+        <div th:if="${errorMessage}" th:utext="${errorMessage}" class="error" />       
+    </body>
+</html>
