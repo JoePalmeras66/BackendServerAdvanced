@@ -58,11 +58,6 @@ public class DeviceController<S extends Session> {
     			.stream()
     			.filter(d -> !d.isUsed())
     			.collect(Collectors.toList());
-
-//    	List<Device> usedDevices = deviceService.findAll(pageNumber, ROW_PER_PAGE)
-//    			.stream()
-//    			.filter(d -> d.isUsed())
-//    			.collect(Collectors.toList());
     	
         long count = deviceService.count();
         boolean hasPrev = pageNumber > 1;
@@ -157,6 +152,11 @@ public class DeviceController<S extends Session> {
 	    return "device-edit";
     }
   
+    /**********************************************************************************/
+    /*                                                                                */
+    /* POST Request to connect spezific Device                                        */
+    /*                                                                                */
+    /**********************************************************************************/
     @PostMapping(value = "/index/add")
     public String addDevice(Model model,
             @ModelAttribute("device") Device device, 
@@ -190,7 +190,7 @@ public class DeviceController<S extends Session> {
 	            Device newDevice = deviceService.findById(device.getId());
 	            
 	            String errorMessage = "START SESSION with " + "Device: " + newDevice.getTyp() + " at Location: " + newDevice.getLocation() + " with sessionId: " + session.getId();
-	            model.addAttribute(ERROR_MESSAGE, errorMessage);
+//	            model.addAttribute(ERROR_MESSAGE, errorMessage);
 	            logger.info(errorMessage);
 	            
 	            return "redirect:/index/" + String.valueOf(newDevice.getId());
@@ -248,6 +248,11 @@ public class DeviceController<S extends Session> {
         return "device";
     }
 
+    /**********************************************************************************/
+    /*                                                                                */
+    /* POST Request to detach spezific Device                                         */
+    /*                                                                                */
+    /**********************************************************************************/
     @PostMapping(value = {"/index/{deviceId}/delete"})
     public String deleteDeviceById(
             Model model, @PathVariable long deviceId, 
@@ -287,17 +292,15 @@ public class DeviceController<S extends Session> {
 	        	
 	        	device.setPrincipal(null);
 	        	device.setUsed(false);
-//	    		sessionService.deleteById(session.getId());
+
 	            deviceService.update(device);
 	            
 	            sessionDevices.remove(device);
 	            session.setAttribute(ACTIVE_DEVICES, sessionDevices);
 	        	
 	        	String errorMessage = "DETACH SESSION with" + " Device: " + device.getTyp() + " at Location: " + device.getLocation() + " with sessionId: " + session.getId();
-				model.addAttribute(ERROR_MESSAGE, errorMessage);
+//				model.addAttribute(ERROR_MESSAGE, errorMessage);
 				logger.info(errorMessage);
-				
-	//    			session.invalidate();
 				
 				return "redirect:/index";
 	        }   
@@ -328,6 +331,11 @@ public class DeviceController<S extends Session> {
         return devices;
     }
     
+    /**********************************************************************************/
+    /*                                                                                */
+    /* Helper function to look if requested Device is not in use in another Session   */
+    /*                                                                                */
+    /**********************************************************************************/
     private boolean deviceIsInUse(List<Device> sessionDevices, Device device) {
     	
     	Predicate<Device> typesAreEqual = e -> (e.getTyp().toUpperCase().compareTo(device.getTyp().toUpperCase())==0);
@@ -347,6 +355,11 @@ public class DeviceController<S extends Session> {
     	return isInUse;
     }
     
+    /****************************************************************/
+    /*                                                              */
+    /* Helper function to look if requested Device is available     */
+    /*                                                              */
+    /****************************************************************/
     private Optional<Device> matchedDevises(Device device) {
     	
     	List<Device> allDevices = deviceService.findAll(1, ROW_PER_PAGE);
