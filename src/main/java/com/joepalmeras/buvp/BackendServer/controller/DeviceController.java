@@ -93,6 +93,11 @@ public class DeviceController<S extends Session> {
         return "device";
     }
     
+    /**********************************************************************************/
+    /*                                                                                */
+    /* POST Request to detach spezific Device                                        */
+    /*                                                                                */
+    /**********************************************************************************/
     @PostMapping(value = {"/index/{deviceId}"})
     public String detachDeviceById(Model model,
           @PathVariable long deviceId,
