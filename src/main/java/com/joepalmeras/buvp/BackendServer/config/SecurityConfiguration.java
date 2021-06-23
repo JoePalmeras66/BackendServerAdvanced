@@ -38,19 +38,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	      	.logout()
 	      .and()
 	      	.httpBasic();
-		
-//		http
-//        .authorizeRequests()
-////          .antMatchers("/h2-console/**").permitAll()
-////          .antMatchers("/index/**").permitAll()//.hasRole("USER")
-////          .antMatchers("/**").permitAll()//.hasRole("USER")
-//          .and()
-//       .formLogin()
-//           .and()
-//       .logout();
-//		
-//        http.csrf().disable();
-//        http.headers().frameOptions().disable();
     }
 
 	@Override
@@ -63,7 +50,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) 
       throws Exception {
-//		auth.inMemoryAuthentication()
         auth.jdbcAuthentication().dataSource(dataSource)
         .withDefaultSchema()
 			.withUser("user1")
@@ -79,16 +65,5 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	public PasswordEncoder passwordEncoder() {
 	    return new BCryptPasswordEncoder();
 	}
-	
-//	@Bean
-//	public EmbeddedDatabase dataSource() {
-//		return new EmbeddedDatabaseBuilder()
-//				.setType(EmbeddedDatabaseType.H2).addScript("classpath:/schema-h2.sql").build();
-//	}
-//
-//	@Bean
-//	public PlatformTransactionManager transactionManager(DataSource dataSource) {
-//		return new DataSourceTransactionManager(dataSource);
-//	}
 	
 }
